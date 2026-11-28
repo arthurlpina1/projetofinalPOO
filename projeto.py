@@ -71,7 +71,12 @@ class Estacionamento:
 
     def vaga_livre(self, i, j):
         vaga = self.vagas[i][j]
-        return vaga == "carro" or vaga == "moto"   #se n tiver veiculo estacionado retorna verdadeiro
+
+        #se n tiver veiculo estacionado retorna verdadeiro
+        if vaga == "carro" or vaga == "moto":
+            return True
+        else:
+            return False
 
     def vagas_livres(self, tipo):
         total = 0
