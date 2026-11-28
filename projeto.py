@@ -110,8 +110,6 @@ class Estacionamento:
                     return i, j
         return None
 
-    # ---------- opções do menu ----------
-
     def registrar_entrada(self):
         tipo = input("Tipo (carro/moto): ").lower()
         if tipo != "carro" and tipo != "moto":
@@ -222,7 +220,7 @@ class Estacionamento:
             i, j = posicao
             print(f"Linha {i + 1}, coluna {j + 1}")
 
-    def alterar_veiculo(self):
+    def alterar_placa(self):
         placa = input("Placa do veículo: ").upper()
         posicao = self.buscar(placa)
 
@@ -232,26 +230,14 @@ class Estacionamento:
 
         i, j = posicao
         veiculo = self.vagas[i][j]
-        print("1 - Alterar placa")
-        print("2 - Alterar horário de entrada")
-        print("0 - Cancelar")
-        opcao = int(input("Opção: "))
 
-        if opcao == 1:
-            nova_placa = input("Nova placa: ").upper()
-            if self.buscar(nova_placa) is not None:
-                print("Já existe um veículo com essa placa.")
-            else:
-                veiculo.placa = nova_placa
-                print("Placa alterada.")
-        elif opcao == 2:
-            novo_horario = ler_horario("Novo horário de entrada (hh:mm): ")
-            veiculo.horario_entrada = novo_horario
-            print("Horário alterado para", formatar_horario(novo_horario))
-        elif opcao == 0:
-            print("Alteração cancelada.")
+        nova_placa = input("Nova placa: ").upper()
+
+        if self.buscar(nova_placa) is not None and nova_placa != placa:
+            print("Já existe um veículo com essa placa.")
         else:
-            print("Opção inválida.")
+            veiculo.placa = nova_placa
+            print("Placa alterada com sucesso.")
 
     def mostrar_estatisticas(self):
         total = self.vagas_carro + self.vagas_moto
@@ -282,29 +268,49 @@ while True:
     print("5 - Buscar placa")
     print("6 - Consultar vagas")
     print("7 - Estatísticas")
-    print("8 - Alterar veículo")
+    print("8 - Alterar placa")
     print("0 - Encerrar")
     opcao = int(input("Opção: "))
 
     if opcao == 1:
         est.registrar_entrada()
+
     elif opcao == 2:
         est.registrar_saida()
+
     elif opcao == 3:
         est.mostrar_estacionamento()
+
     elif opcao == 4:
         est.listar_estacionados()
+
     elif opcao == 5:
         est.buscar_placa()
+
     elif opcao == 6:
         print("Vagas de carro:", est.vagas_livres("carro"))
         print("Vagas de moto:", est.vagas_livres("moto"))
+
     elif opcao == 7:
         est.mostrar_estatisticas()
+        
     elif opcao == 8:
-        est.alterar_veiculo()
+        est.alterar_placa()
+        
     elif opcao == 0:
-        break
+        ocupado = False
+
+        for i in range(est.ordem_matriz):
+            for j in range(est.ordem_matriz):
+                if not est.vaga_livre(i, j):
+                    ocupado = True
+
+        if ocupado:
+            print("Não é possível encerrar. Ainda existem veículos estacionados.")
+            print("Registre a saída de todos os veículos primeiro.")
+        else:
+            break
+
     else:
         print("Escolha uma opção válida")
 
