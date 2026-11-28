@@ -256,6 +256,10 @@ class Estacionamento:
 
 
 ordem = int(input("ordem da matriz: "))
+while ordem <= 0:
+    print("A ordem deve ser maior que zero.")
+    ordem = int(input("Digite a ordem da matriz: "))
+
 est = Estacionamento(ordem)
 est.mostrar_estacionamento()
 
